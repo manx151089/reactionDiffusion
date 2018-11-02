@@ -1,7 +1,23 @@
-vector vel = volumesamplev(1,0,v@P);
+float steplen = chf("Step_length");
+vector min, max;
 
+getpointbbox(0,"static",min,max);
 
-vector step = nrandom() * {2,2,2} -{1,1,1};
-float steplen = chf ("Step_Length");
+vector bbcenter = (min+max)/2;
 
-v@P += step * steplen + vel;
+float bbrad = distance(bbcenter, max)+ 2 * steplen;
+
+int numbermoving = npointsgroup(0,"move");
+
+int targetnum = int(4 * (bbrad*bbrad) * 3.141592 * 4000);
+
+i@tnum = targetnum;
+
+if(numbermoving < targetnum){
+    for(int i =0; i < ( targetnum - numbermoving ); i++){
+        vector npos = bbcenter + (normalize(sample_sphere_uniform(nrandom())) * bbrad);
+        int newpt = addpoint (0, npos);
+        setpointgroup(0, "move", newpt, 1);
+        setpointgroup(0, "static", newpt, 0);
+    }
+}
