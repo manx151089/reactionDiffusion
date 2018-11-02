@@ -1,0 +1,7 @@
+vector vel = volumesamplev(1,0,v@P);
+
+
+vector step = nrandom() * {2,2,2} -{1,1,1};
+float steplen = chf ("Step_Length");
+
+v@P += step * steplen + vel;
