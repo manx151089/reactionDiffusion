@@ -1,0 +1,26 @@
+float maxDist = chf("max_dist");
+float stickprob = chf("stick_probability");
+float steplen = chf("step_length");
+
+vector min,max;
+
+//cacl bount sphere
+getpointbbox(0,"static",min,max);
+vector bbcenter = (min+max)/2;
+float bbrad = distance(bbcenter, max)+ 2 * steplen;
+
+
+int nearpt = nearpoint(0,"static",v@P, maxDist);
+
+if(nearpt > -1){
+    if(nrandom()<stickprob){
+        setpointgroup(0,"static", @ptnum,1);
+        setpointgroup(0,"move", @ptnum,0);
+    }
+}
+else{
+    if((distance2(bbcenter,v@P)) > (bbrad*bbrad)){
+       vector npos = bbcenter + (normalize(sample_sphere_uniform(nrandom())) * bbrad);
+       v@P = npos;
+    }
+}
